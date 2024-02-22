@@ -67,3 +67,16 @@ label {
 .btn {
   padding: 30px;
 }
+
+.form-btn {
+  width: 100%;
+  padding: 10px !important;
+  font-size: 18px !important;
+}
+
+.form-btn-clear {
+  background-color: inherit !important;
+  border: 2px solid red !important;
+  color: red !important;
+  font-weight: 500 !important;
+}
