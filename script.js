@@ -60,6 +60,10 @@ function createForm() {
   const formInpAcessories = createFormInput('Аксессуары');
   const formInpServices = createFormInput('Услуги');
 
+  const formBtnWrapper = document.createElement('div');
+  const formBtn = document.createElement('button');
+  const formBtnClear = document.createElement('button');
+
   // тест
   // formInpChecks.input.value = 10
   // formInpTurnover.input.value = 100000
@@ -71,19 +75,14 @@ function createForm() {
   formInpAcessories.input.placeholder = 'Пример: 999+999+999...';
   formInpServices.input.placeholder = 'Пример: 999+999+999...';
 
-  const formBtnWrapper = document.createElement('div');
-  const formBtn = document.createElement('button');
-  const formBtnClear = document.createElement('button');
-
   form.className = 'input-group mb-3 mt-4';
   formBtn.className = 'btn form-btn btn-success';
   formBtnClear.className = 'btn form-btn btn-danger mb-2 form-btn-clear';
-  formBtn.textContent = 'Применить';
   formBtnWrapper.style.width = '100%';
-  formBtnClear.textContent = 'Очистить'
+  formBtnClear.textContent = 'Очистить';
+  formBtn.textContent = 'Применить';
 
   formBtnWrapper.append(formBtnClear, formBtn);
-
   form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
 
   return {
@@ -100,7 +99,6 @@ function createForm() {
 // функция вычисляет процент значение от общего оборота продаж
 const calculatePercentage = (a, b) => b / a * 100;
 
-
 // функция очищает все поля при условии, что юзер подтвердит удаление
 function clearInputs(inputsArray) {
   for (let i = 1; i <= inputsArray.length; i++) {
@@ -110,8 +108,8 @@ function clearInputs(inputsArray) {
 
 // сборка приложения
 const app = document.getElementById('app');
-
 const appContainer = document.createElement('div'); // контейнер
+
 const formGroup = document.createElement('div'); // обёртка для формы
 const appForm = createForm(); // форма
 
@@ -124,9 +122,9 @@ appContainer.className = 'container';
 formGroup.style.display = 'flex';
 
 appContainer.append(appForm.form);
-
 app.append(appContainer);
 
+// при нажатии на "применить" выполняется вычисление, форматирование и копирование данных в буфер обмена
 appForm.formBtn.addEventListener('click', (e) => {
   e.preventDefault();
 
@@ -144,8 +142,10 @@ appForm.formBtn.addEventListener('click', (e) => {
   console.log(result);
 });
 
+// при нажатии на "очистить" очищаем поля при подтверждении юзера
 appForm.formBtnClear.addEventListener('click', (e) => {
   e.preventDefault();
+
   if (!confirm('Удалить все?')) return;
   clearInputs([checks, turnover, acessories, services]);
 });
