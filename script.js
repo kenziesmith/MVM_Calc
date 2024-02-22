@@ -56,10 +56,11 @@ function createForm() {
   const formInpAcessories = createFormInput('Аксессуары');
   const formInpServices = createFormInput('Услуги');
 
-  formInpChecks.input.value = 10
-  formInpTurnover.input.value = 100000
-  formInpAcessories.input.value = 7000
-  formInpServices.input.value = 4500
+  // тест
+  // formInpChecks.input.value = 10
+  // formInpTurnover.input.value = 100000
+  // formInpAcessories.input.value = 7000
+  // formInpServices.input.value = 4500
 
   formInpChecks.input.placeholder = 'Количество чеков...'
   formInpTurnover.input.placeholder = 'Пример: 300000...'
