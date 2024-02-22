@@ -16,7 +16,7 @@ function createFormInput(label) {
   inputLabel.style.fontStyle = 'italic'
   inputBtn.textContent = '⛌';
   inputBtn.style.fontSize = '20px'
-  inputBtn.style.padding = '0px 10px'
+  inputBtn.style.padding = '0px 15px'
   inputBtn.style.zIndex = '1000'
   inputBtn.className = 'btn btn-danger';
 
@@ -96,6 +96,8 @@ function createForm() {
 const calculatePercentage = (a, b) => b / a * 100;
 
 function clearInputs(inputsArray) {
+  if (!confirm('Удалить все?')) return;
+
   for (let i = 1; i <= inputsArray.length; i++) {
     inputsArray[i - 1].input.value = '';
   }
