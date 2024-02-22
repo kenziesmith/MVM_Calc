@@ -4,9 +4,9 @@
   box-sizing: border-box;
 }
 
-::placeholder {
+*::placeholder {
   font-style: italic;
-  color: #fff;
+  color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .container {
@@ -34,7 +34,8 @@ body {
   width: 100%;
   text-align: center;
   background-color: gray;
-  color: #D3D3D3;
+  color: #fff;
+  font-size: 14px;
   font-family: sans-serif;
 }
 

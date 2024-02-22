@@ -1,7 +1,8 @@
 /* by kenzie */
 
+
 // функция генерирует поле для ввода
-function createFormInput(label) {
+function createFormInput(name) {
   const inputBox = document.createElement('div');
   const input = document.createElement('input');
   const inputLabel = document.createElement('label');
@@ -12,30 +13,33 @@ function createFormInput(label) {
   input.type = 'tel';
   input.className = 'form-control input-filed';
   input.style.padding = '10px 15px 10px 15px';
-  inputLabel.textContent = label;
+  inputLabel.textContent = name;
   inputLabel.style.fontStyle = 'italic'
   inputBtn.textContent = '⛌';
-  inputBtn.style.fontSize = '20px'
-  inputBtn.style.padding = '0px 15px'
+  inputBtn.style.fontSize = '22px'
+  inputBtn.style.padding = '0px 14px'
   inputBtn.style.zIndex = '1000'
   inputBtn.className = 'btn btn-danger';
 
+  // очищаем поле при условии, что юзер подтвердит удаление
   inputBtn.addEventListener('click', (e) => {
     e.preventDefault();
     input.value = confirm('Очистить поле?') ? '' : input.value;
   });
 
+  // добавим все элементы инпута в специальный контейнер
   inputBox.append(inputLabel, input, inputBtn);
 
+  // вернем все в виде объекта с вспомогательными методами
   return {
     inputBox,
     input,
     inputLabel,
     inputBtn,
-    calculate() {
+    calculate() { // метод вычисляет значение в инпуте
       return eval(this.input.value);
     },
-    format() {
+    format() { // метод форматирует значение в инпуте
       let formatter = Intl.NumberFormat('ru');
 
       if (this.calculate()) {
@@ -62,12 +66,12 @@ function createForm() {
   // formInpAcessories.input.value = 7000
   // formInpServices.input.value = 4500
 
-  formInpChecks.input.placeholder = 'Количество чеков...'
-  formInpTurnover.input.placeholder = 'Пример: 300000...'
-  formInpAcessories.input.placeholder = 'Пример: 999+999+999...'
-  formInpServices.input.placeholder = 'Пример: 999+999+999...'
+  formInpChecks.input.placeholder = 'Количество чеков...';
+  formInpTurnover.input.placeholder = 'Пример: 300000...';
+  formInpAcessories.input.placeholder = 'Пример: 999+999+999...';
+  formInpServices.input.placeholder = 'Пример: 999+999+999...';
 
-  const fromBtnWrapper = document.createElement('div');
+  const formBtnWrapper = document.createElement('div');
   const formBtn = document.createElement('button');
   const formBtnClear = document.createElement('button');
 
@@ -75,12 +79,12 @@ function createForm() {
   formBtn.className = 'btn form-btn btn-success';
   formBtnClear.className = 'btn form-btn btn-danger mb-2 form-btn-clear';
   formBtn.textContent = 'Применить';
-  fromBtnWrapper.style.width = '100%';
+  formBtnWrapper.style.width = '100%';
   formBtnClear.textContent = 'Очистить'
 
-  fromBtnWrapper.append(formBtnClear, formBtn);
+  formBtnWrapper.append(formBtnClear, formBtn);
 
-  form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, fromBtnWrapper);
+  form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
 
   return {
     form,
@@ -96,9 +100,9 @@ function createForm() {
 // функция вычисляет процент значение от общего оборота продаж
 const calculatePercentage = (a, b) => b / a * 100;
 
-function clearInputs(inputsArray) {
-  if (!confirm('Удалить все?')) return;
 
+// функция очищает все поля при условии, что юзер подтвердит удаление
+function clearInputs(inputsArray) {
   for (let i = 1; i <= inputsArray.length; i++) {
     inputsArray[i - 1].input.value = '';
   }
@@ -126,22 +130,22 @@ app.append(appContainer);
 appForm.formBtn.addEventListener('click', (e) => {
   e.preventDefault();
 
-  navigator.clipboard.writeText(`Чеки: ${checks.format()}
+  const result = `Чеки: ${checks.format()}
 Оборот: ${turnover.format()}
 Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
-Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`).then(function () {
+Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`;
+
+  navigator.clipboard.writeText(result).then(function () {
     alert(`Данные успешно скопированы в буфер обмена!`);
   }, function (err) {
     alert('Произошла ошибка при копировании текста: ', err);
   });
 
-  console.log(`Чеки: ${checks.format()}
-Оборот: ${turnover.format()}
-Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
-Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`);
+  console.log(result);
 });
 
 appForm.formBtnClear.addEventListener('click', (e) => {
   e.preventDefault();
+  if (!confirm('Удалить все?')) return;
   clearInputs([checks, turnover, acessories, services]);
 });
