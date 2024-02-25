@@ -59,21 +59,19 @@ function createForm() {
   const formInpTurnover = createFormInput('Оборот');
   const formInpAcessories = createFormInput('Аксессуары');
   const formInpServices = createFormInput('Услуги');
+  const formInpNFilter = createFormInput('Сетевые фильтры');
+  const formInpBattery = createFormInput('Батарейки')
 
   const formBtnWrapper = document.createElement('div');
   const formBtn = document.createElement('button');
   const formBtnClear = document.createElement('button');
 
-  // тест
-  // formInpChecks.input.value = 10
-  // formInpTurnover.input.value = 100000
-  // formInpAcessories.input.value = 7000
-  // formInpServices.input.value = 4500
-
   formInpChecks.input.placeholder = 'Количество чеков...';
-  formInpTurnover.input.placeholder = 'Пример: 300000...';
-  formInpAcessories.input.placeholder = 'Пример: 999+999+999...';
-  formInpServices.input.placeholder = 'Пример: 999+999+999...';
+  formInpTurnover.input.placeholder = 'Общий оборот...';
+  formInpAcessories.input.placeholder = '999+999+999...';
+  formInpServices.input.placeholder = '999+999+999...';
+  formInpNFilter.input.placeholder = '1+1...';
+  formInpBattery.input.placeholder = '1+1...'
 
   form.className = 'input-group mb-3 mt-4';
   formBtn.className = 'btn form-btn btn-success';
@@ -83,7 +81,7 @@ function createForm() {
   formBtn.textContent = 'Применить';
 
   formBtnWrapper.append(formBtnClear, formBtn);
-  form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
+  form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formInpNFilter.inputBox, formInpBattery.inputBox, formBtnWrapper);
 
   return {
     form,
@@ -91,6 +89,8 @@ function createForm() {
     formInpTurnover,
     formInpAcessories,
     formInpServices,
+    formInpNFilter,
+    formInpBattery,
     formBtn,
     formBtnClear,
   }
@@ -106,6 +106,20 @@ function clearInputs(inputsArray) {
   }
 }
 
+// блок с результатом
+function showResult(value) {
+  const resultBox = document.createElement('div');
+  const resultText = document.createElement('div');
+
+  resultText.textContent = value;
+  resultText.style.fontStyle = 'italic'
+  resultBox.style = 'mt-3'
+
+  resultBox.append(resultText);
+
+  return { resultBox, resultText };
+}
+
 // сборка приложения
 const app = document.getElementById('app');
 const appContainer = document.createElement('div'); // контейнер
@@ -117,6 +131,8 @@ const checks = appForm.formInpChecks;
 const turnover = appForm.formInpTurnover;
 const acessories = appForm.formInpAcessories;
 const services = appForm.formInpServices;
+const nFilter = appForm.formInpNFilter;
+const battery = appForm.formInpBattery;
 
 appContainer.className = 'container';
 formGroup.style.display = 'flex';
@@ -128,18 +144,23 @@ app.append(appContainer);
 appForm.formBtn.addEventListener('click', (e) => {
   e.preventDefault();
 
-  const result = `Чеки: ${checks.format()}
+  const resultInfo = `Чеки: ${checks.format()}
 Оборот: ${turnover.format()}
-Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
-Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`;
+Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)\n
+Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)
+Сетевые фильтры: ${nFilter.format()}
+Батарейки: ${battery.format()}`;
 
-  navigator.clipboard.writeText(result).then(function () {
+  // const result = showResult(resultInfo);
+  // appContainer.append(result.resultBox);
+
+  navigator.clipboard.writeText(resultInfo).then(function () {
     alert(`Данные успешно скопированы в буфер обмена!`);
   }, function (err) {
     alert('Произошла ошибка при копировании текста: ', err);
   });
 
-  console.log(result);
+  console.log(resultInfo);
 });
 
 // при нажатии на "очистить" очищаем поля при подтверждении юзера
