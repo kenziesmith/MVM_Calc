@@ -59,7 +59,7 @@ function createForm() {
   const formInpTurnover = createFormInput('Оборот');
   const formInpAcessories = createFormInput('Аксессуары');
   const formInpServices = createFormInput('Услуги');
-  const formInpNFilter = createFormInput('Сетевые фильтры');
+  const formInpNFilter = createFormInput('Удлинители');
   const formInpBattery = createFormInput('Батарейки')
 
   const formBtnWrapper = document.createElement('div');
@@ -146,9 +146,9 @@ appForm.formBtn.addEventListener('click', (e) => {
 
   const resultInfo = `Чеки: ${checks.format()}
 Оборот: ${turnover.format()}
-Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)\n
+Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
 Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)
-Сетевые фильтры: ${nFilter.format()}
+Удлинители: ${nFilter.format()}
 Батарейки: ${battery.format()}`;
 
   // const result = showResult(resultInfo);
