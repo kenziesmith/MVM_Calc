@@ -81,7 +81,7 @@ function createForm() {
   formBtn.textContent = 'Применить';
 
   formBtnWrapper.append(formBtnClear, formBtn);
-  form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formInpNFilter.inputBox, formInpBattery.inputBox, formBtnWrapper);
+  form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
 
   return {
     form,
@@ -147,9 +147,7 @@ appForm.formBtn.addEventListener('click', (e) => {
   const resultInfo = `Чеки: ${checks.format()}
 Оборот: ${turnover.format()}
 Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
-Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)
-Удлинители: ${nFilter.format()}
-Батарейки: ${battery.format()}`;
+Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`;
 
   // const result = showResult(resultInfo);
   // appContainer.append(result.resultBox);
