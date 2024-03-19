@@ -56,22 +56,20 @@ function createForm() {
   const form = document.createElement('form');
 
   const formInpChecks = createFormInput('Чеки');
+  const formInpChecksOAS = createFormInput('Чеки (ЗДУ)');
   const formInpTurnover = createFormInput('Оборот');
   const formInpAcessories = createFormInput('Аксессуары');
   const formInpServices = createFormInput('Услуги');
-  const formInpNFilter = createFormInput('Удлинители');
-  const formInpBattery = createFormInput('Батарейки')
 
   const formBtnWrapper = document.createElement('div');
   const formBtn = document.createElement('button');
   const formBtnClear = document.createElement('button');
 
   formInpChecks.input.placeholder = 'Количество чеков...';
+  formInpChecksOAS.input.placeholder = 'Количество чеков с заказом доп. услуг...';
   formInpTurnover.input.placeholder = 'Общий оборот...';
   formInpAcessories.input.placeholder = '999+999+999...';
   formInpServices.input.placeholder = '999+999+999...';
-  formInpNFilter.input.placeholder = '1+1...';
-  formInpBattery.input.placeholder = '1+1...'
 
   form.className = 'input-group mb-3 mt-4';
   formBtn.className = 'btn form-btn btn-success';
@@ -81,16 +79,15 @@ function createForm() {
   formBtn.textContent = 'Применить';
 
   formBtnWrapper.append(formBtnClear, formBtn);
-  form.append(formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
+  form.append(formInpChecks.inputBox, formInpChecksOAS.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
 
   return {
     form,
     formInpChecks,
+    formInpChecksOAS,
     formInpTurnover,
     formInpAcessories,
     formInpServices,
-    formInpNFilter,
-    formInpBattery,
     formBtn,
     formBtnClear,
   }
@@ -128,6 +125,7 @@ const formGroup = document.createElement('div'); // обёртка для фор
 const appForm = createForm(); // форма
 
 const checks = appForm.formInpChecks;
+const checksOAS = appForm.formInpChecksOAS;
 const turnover = appForm.formInpTurnover;
 const acessories = appForm.formInpAcessories;
 const services = appForm.formInpServices;
@@ -145,8 +143,9 @@ appForm.formBtn.addEventListener('click', (e) => {
   e.preventDefault();
 
   const resultInfo = `Чеки: ${checks.format()}
+ЗДУ (чеки шт.): ${checksOAS.format()}
 Оборот: ${turnover.format()}
-Аксессуары: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
+Аксы: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
 Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`;
 
   // const result = showResult(resultInfo);
