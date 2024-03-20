@@ -55,18 +55,28 @@ function createFormInput(name) {
 function createForm() {
   const form = document.createElement('form');
 
-  const formInpChecks = createFormInput('Чеки');
   const formInpChecksOAS = createFormInput('Чеки (ЗДУ)');
+  const formInpTurnoverOAS = createFormInput('Оборот (ЗДУ)');
+  const formInpChecks = createFormInput('Чеки');
   const formInpTurnover = createFormInput('Оборот');
-  const formInpAcessories = createFormInput('Аксессуары');
+  const formInpAcessories = createFormInput('Аксы');
   const formInpServices = createFormInput('Услуги');
+
+  // тесты
+  // formInpChecksOAS.input.value = '4'
+  // formInpTurnoverOAS.input.value = '599+419'
+  // formInpChecks.input.value = '10'
+  // formInpTurnover.input.value = '201911'
+  // formInpAcessories.input.value = '419+1274+4395+799+8000'
+  // formInpServices.input.value = '599+999+1799+1990+4999'
 
   const formBtnWrapper = document.createElement('div');
   const formBtn = document.createElement('button');
   const formBtnClear = document.createElement('button');
 
-  formInpChecks.input.placeholder = 'Количество чеков...';
   formInpChecksOAS.input.placeholder = 'Количество чеков с заказом доп. услуг...';
+  formInpTurnoverOAS.input.placeholder = 'Оборот доп. услуг...'
+  formInpChecks.input.placeholder = 'Общее количество чеков...';
   formInpTurnover.input.placeholder = 'Общий оборот...';
   formInpAcessories.input.placeholder = '999+999+999...';
   formInpServices.input.placeholder = '999+999+999...';
@@ -79,12 +89,13 @@ function createForm() {
   formBtn.textContent = 'Применить';
 
   formBtnWrapper.append(formBtnClear, formBtn);
-  form.append(formInpChecks.inputBox, formInpChecksOAS.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
+  form.append(formInpChecksOAS.inputBox, formInpTurnoverOAS.inputBox, formInpChecks.inputBox, formInpTurnover.inputBox, formInpAcessories.inputBox, formInpServices.inputBox, formBtnWrapper);
 
   return {
     form,
-    formInpChecks,
     formInpChecksOAS,
+    formInpChecks,
+    formInpTurnoverOAS,
     formInpTurnover,
     formInpAcessories,
     formInpServices,
@@ -124,8 +135,9 @@ const appContainer = document.createElement('div'); // контейнер
 const formGroup = document.createElement('div'); // обёртка для формы
 const appForm = createForm(); // форма
 
-const checks = appForm.formInpChecks;
 const checksOAS = appForm.formInpChecksOAS;
+const checks = appForm.formInpChecks;
+const turnoverOAS = appForm.formInpTurnoverOAS;
 const turnover = appForm.formInpTurnover;
 const acessories = appForm.formInpAcessories;
 const services = appForm.formInpServices;
@@ -142,8 +154,8 @@ app.append(appContainer);
 appForm.formBtn.addEventListener('click', (e) => {
   e.preventDefault();
 
-  const resultInfo = `Чеки: ${checks.format()}
-ЗДУ (чеки шт.): ${checksOAS.format()}
+  const resultInfo = `ЗДУ (чеки шт. | оборот): ${checksOAS.format()} | ${turnoverOAS.format()}
+Чеки: ${checks.format()}
 Оборот: ${turnover.format()}
 Аксы: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
 Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`;
@@ -152,7 +164,13 @@ appForm.formBtn.addEventListener('click', (e) => {
   // appContainer.append(result.resultBox);
 
   navigator.clipboard.writeText(resultInfo).then(function () {
-    alert(`Данные успешно скопированы в буфер обмена!`);
+    alert(`Данные успешно скопированы в буфер обмена!
+    
+ЗДУ (чеки шт. | оборот): ${checksOAS.format()} | ${turnoverOAS.format()}
+Чеки: ${checks.format()}
+Оборот: ${turnover.format()}
+Аксы: ${acessories.format()} (${calculatePercentage(turnover.calculate(), acessories.calculate()).toFixed(2)}%)
+Услуги: ${services.format()} (${calculatePercentage(turnover.calculate(), services.calculate()).toFixed(2)}%)`);
   }, function (err) {
     alert('Произошла ошибка при копировании текста: ', err);
   });
